@@ -202,6 +202,62 @@
       .feedback-actions { flex-direction: column; }
     }
 
+    /* 手機答題模式：在單一 9:16 視窗同時保留題目與六個範疇。 */
+    @media (max-width: 650px) and (orientation: portrait) {
+      body.game-active { height: 100dvh; min-height: 100dvh; overflow: hidden; background: linear-gradient(#dff5ff 0 32%, #cceaa7 32%); }
+      body.game-active .cloud { display: none; }
+      body.game-active .app { width: 100%; height: 100dvh; padding: max(5px, env(safe-area-inset-top)) 7px max(5px, env(safe-area-inset-bottom)); display: grid; grid-template-rows: 38px minmax(0, 1fr); gap: 5px; }
+      body.game-active .topbar { height: 38px; margin: 0; padding: 0 3px; }
+      body.game-active .mini-eye { width: 36px; height: 29px; border-width: 2px; box-shadow: none; }
+      body.game-active .mini-eye::before { width: 11px; height: 11px; left: 10px; top: 6px; border-width: 2px; }
+      body.game-active .mini-eye::after { width: 4px; height: 4px; left: 13px; top: 8px; }
+      body.game-active .brand { gap: 7px; font-size: .78rem; letter-spacing: 0; }
+      body.game-active .brand span:last-child { font-size: .78rem; }
+      body.game-active .tool-btn { padding: 6px 9px; font-size: .72rem; box-shadow: 0 2px 0 rgba(41,73,91,.1); }
+      body.game-active .game-screen { min-height: 0; height: 100%; display: grid; grid-template-rows: 42px minmax(0, 1fr); gap: 5px; }
+      body.game-active .hud { height: 42px; grid-template-columns: auto minmax(55px, 1fr) auto; gap: 7px; padding: 5px 9px; border-radius: 15px; border-width: 2px; box-shadow: 0 4px 0 rgba(44,100,91,.1); }
+      body.game-active .level-pill { padding: 5px 8px; font-size: .75rem; }
+      body.game-active .progress-track { grid-column: auto; grid-row: auto; height: 10px; border-width: 1px; }
+      body.game-active .score { font-size: .72rem; }
+      body.game-active .score span { font-size: .9rem; }
+      body.game-active .game-layout { min-height: 0; height: 100%; display: grid; grid-template-rows: minmax(178px, 37%) minmax(0, 63%); gap: 5px; }
+      body.game-active .mission { min-height: 0; height: 100%; padding: 8px 10px; border-radius: 18px; overflow: hidden; }
+      body.game-active .mission-label { font-size: .69rem; min-height: 24px; }
+      body.game-active .swot-chip { padding: 4px 7px; font-size: .72rem; }
+      body.game-active .statement-card { flex: 1 1 auto; min-height: 70px; max-height: 106px; margin: 5px 0 6px; padding: 9px 10px; border-width: 2px; border-radius: 14px; box-shadow: 0 4px 0 #ead27d; cursor: default; touch-action: auto; display: grid; align-items: center; overflow: auto; }
+      body.game-active .statement-card::before { display: none; }
+      body.game-active .statement { font-size: clamp(.88rem, 4vw, 1rem); line-height: 1.45; }
+      body.game-active .instruction { display: none; }
+      body.game-active .action-row { display: grid; grid-template-columns: minmax(0, 1fr) 105px; gap: 6px; align-items: center; }
+      body.game-active .selected-name { min-height: 0; text-align: left; font-size: .72rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding-left: 2px; }
+      body.game-active .primary-btn { min-height: 34px; margin: 0; padding: 7px 8px; border-radius: 11px; font-size: .78rem; box-shadow: 0 4px 0 #d9584b; }
+      body.game-active .primary-btn:disabled { box-shadow: 0 4px 0 #8fa29d; }
+      body.game-active .hint-btn { position: absolute; right: 114px; bottom: 10px; margin: 0; font-size: .7rem; z-index: 2; }
+      body.game-active .mission { position: relative; padding-bottom: 43px; }
+      body.game-active .hint-box { position: fixed; z-index: 45; left: 14px; right: 14px; bottom: max(14px, env(safe-area-inset-bottom)); margin: 0; padding: 11px 13px; border-radius: 13px; background: #ecf8ff; box-shadow: 0 10px 35px rgba(30,68,81,.28); font-size: .82rem; line-height: 1.5; }
+      body.game-active .map-panel { min-height: 0; height: 100%; padding: 7px; border-radius: 18px; overflow: hidden; background: linear-gradient(#e4f6ff 0 20%, #c9e99e 20%); }
+      body.game-active .map-title { height: 25px; margin: 0 2px 5px; flex-direction: row; align-items: center; gap: 5px; }
+      body.game-active .map-title h2 { font-size: .82rem; }
+      body.game-active .map-title small { font-size: .61rem; }
+      body.game-active .campus-map { height: calc(100% - 30px); grid-template-columns: repeat(3, minmax(0, 1fr)); grid-template-rows: repeat(2, minmax(0, 1fr)); gap: 6px; }
+      body.game-active .zone { min-height: 0; height: 100%; padding: 5px 3px 7px; border-width: 2px; border-radius: 13px; box-shadow: 0 4px 0 rgba(58,101,87,.12); justify-content: center; gap: 2px; }
+      body.game-active .zone:hover { translate: none; box-shadow: 0 4px 0 rgba(58,101,87,.12); }
+      body.game-active .zone.selected { box-shadow: 0 0 0 3px rgba(106,199,178,.3), 0 4px 0 rgba(58,101,87,.14); }
+      body.game-active .zone-badge, body.game-active .zone-clue { display: none; }
+      body.game-active .zone-icon { width: min(58px, 15vw); height: min(47px, 7.2dvh); margin: 0; flex: 0 1 auto; }
+      body.game-active .zone-name { display: block; font-size: clamp(.64rem, 2.8vw, .74rem); line-height: 1.15; }
+      body.game-active .road { height: 38px; }
+    }
+
+    @media (max-width: 380px) and (max-height: 700px) and (orientation: portrait) {
+      body.game-active .game-layout { grid-template-rows: minmax(164px, 38%) minmax(0, 62%); }
+      body.game-active .statement-card { max-height: 90px; }
+      body.game-active .statement { font-size: .84rem; line-height: 1.36; }
+      body.game-active .zone-icon { height: 39px; width: 49px; }
+      body.game-active .zone-name { font-size: .61rem; }
+      body.game-active .map-title small { display: none; }
+    }
+
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: .01ms !important; }
     }
@@ -212,7 +268,7 @@
   <div class="cloud two" aria-hidden="true"></div>
   <main class="app">
     <header class="topbar">
-      <div class="brand"><span class="mini-eye" aria-hidden="true"></span><span>成福國小・健康促進</span></div>
+      <div class="brand"><span class="mini-eye" aria-hidden="true"></span><span>新北市・健康促進教師共學</span></div>
       <button class="tool-btn" id="guideButton" type="button">六大範疇小抄</button>
     </header>
 
@@ -221,7 +277,7 @@
         <div class="hero-copy">
           <span class="eyebrow">👀 教師共學任務</span>
           <h1>視力保健<em>大作戰</em></h1>
-          <p class="lead">校園裡散落了 15 張視力保健線索卡。請判斷每段 SWOT 敘述屬於哪一個範疇，幫助護眼小隊完成校園健康地圖！</p>
+          <p class="lead">校園裡散落了 8 張視力保健線索卡。請判斷每段 SWOT 敘述屬於哪一個範疇，幫助護眼小隊完成校園健康地圖！</p>
           <button class="start-btn" id="startButton" type="button">出發找線索 →</button>
           <div class="promise" aria-label="遊戲特色">
             <span>不計時、不搶快</span><span>答錯會給判斷線索</span><span>答對再看完整解說</span>
@@ -252,25 +308,27 @@
 
     <section class="game-screen hidden" id="gameScreen" aria-live="polite">
       <div class="panel hud">
-        <div class="level-pill">線索 <span id="cardNumber">1</span> / 15</div>
+        <div class="level-pill">線索 <span id="cardNumber">1</span> / 8</div>
         <div class="progress-track" aria-label="遊戲進度"><div class="progress-fill" id="progressFill"></div></div>
         <div class="score">已找到 <span id="foundCount">0</span> 張</div>
       </div>
       <div class="game-layout">
         <aside class="panel mission">
           <div class="mission-label"><span>本回合 SWOT 敘述</span><span class="swot-chip" id="swotChip">S 優勢</span></div>
-          <div class="statement-card" id="statementCard" draggable="true" tabindex="0" aria-label="可拖曳的敘述卡">
+          <div class="statement-card" id="statementCard" draggable="true" tabindex="0" aria-label="視力保健 SWOT 敘述卡">
             <p class="statement" id="statementText"></p>
           </div>
           <p class="instruction">把卡片拖到地圖，或直接點選一個地標</p>
-          <div class="selected-name" id="selectedName">尚未選擇範疇</div>
-          <button class="primary-btn" id="checkButton" type="button" disabled>確認配對</button>
+          <div class="action-row">
+            <div class="selected-name" id="selectedName">尚未選擇範疇</div>
+            <button class="primary-btn" id="checkButton" type="button" disabled>確認配對</button>
+          </div>
           <button class="hint-btn" id="hintButton" type="button">我需要一點提示</button>
           <div class="hint-box hidden" id="hintBox"></div>
         </aside>
 
         <section class="panel map-panel" aria-label="六大範疇校園地圖">
-          <div class="map-title"><h2>成福護眼校園地圖</h2><small>每個地標代表一個健康促進範疇</small></div>
+          <div class="map-title"><h2>護眼校園地圖</h2><small>點選一個健康促進範疇</small></div>
           <div class="road" aria-hidden="true"></div>
           <div class="campus-map" id="campusMap"></div>
         </section>
@@ -280,9 +338,9 @@
     <section class="panel finish-screen hidden" id="finishScreen">
       <div class="stars" aria-hidden="true">★ ★ ★</div>
       <h2>護眼地圖完成！</h2>
-      <p class="lead" style="margin-inline:auto">你已經把 15 張 SWOT 線索送回正確的六大範疇。重點不是快，而是知道「為什麼」。</p>
+      <p class="lead" style="margin-inline:auto">你已經把 8 張 SWOT 線索送回正確的六大範疇。重點不是快，而是知道「為什麼」。</p>
       <div class="summary-stats">
-        <div class="stat"><b>15</b><span>完成線索</span></div>
+        <div class="stat"><b>8</b><span>完成線索</span></div>
         <div class="stat"><b id="accuracyStat">100%</b><span>首次配對正確率</span></div>
         <div class="stat"><b id="hintStat">0</b><span>使用提示</span></div>
       </div>
@@ -328,21 +386,14 @@
     ];
 
     const cards = [
-      { swot:'W', category:'policy', text:'多數老師仍視健康促進是行政端業務，參與主動性較低，視力保健政策推動受阻。', hint:'想想「誰負責推動」以及全校的參與方向。', reason:'這段聚焦在健康促進政策由誰承擔、教師是否參與全校推動，因此屬於「學校衛生政策」。', rule:'判斷線索：行政責任、校務決策、全校性推動，通常指向學校衛生政策。' },
-      { swot:'W', category:'policy', text:'學校活動眾多，健促議題宣導不易深入落實。', hint:'不是某一堂課，而是全校活動安排與議題推動的優先順序。', reason:'敘述談的是全校推動健康議題時，受到活動與校務安排影響，核心是政策落實程度。', rule:'判斷線索：當問題是「全校有沒有持續推動」，優先思考學校衛生政策。' },
-      { swot:'T', category:'policy', text:'新北市各項教育政策訊息頻繁，政策推動容易失焦，衛生政策易被忽略。', hint:'關鍵字就在「政策訊息、推動失焦、被忽略」。', reason:'外部教育政策太多，影響校內衛生政策的聚焦與執行，因此歸在學校衛生政策的威脅。', rule:'判斷線索：上級政策、行政訊息與執行焦點，都屬政策層面的影響。' },
-      { swot:'S', category:'physical', text:'以博物館、美術館、探索樂園理念建置校園，打造不近距離用眼的學習環境。', hint:'注意「建置校園」與「學習環境」這兩個詞。', reason:'這段強調校園空間如何被設計與建置，藉由實體環境改變用眼方式，屬於學校物質環境。', rule:'判斷線索：空間、設備、硬體、採光與校園設施，都先想到物質環境。' },
-      { swot:'W', category:'physical', text:'教室黑板陸續更換大屏螢幕，讓孩子接觸 3C 的機會更頻繁。', hint:'問題來自教室裡看得見、摸得到的設備。', reason:'大屏螢幕是教室硬體設備，設備改變增加螢幕暴露，因此歸在學校物質環境。', rule:'判斷線索：即使影響的是行為，只要直接原因是硬體設備，仍屬物質環境。' },
-      { swot:'W', category:'social', text:'午休時間過短，孩子無法有充足午睡時間，眼睛得不到適當休息。', hint:'思考校園共同生活中的作息與習慣。', reason:'午休長短是學校日常作息與生活文化的一部分，影響學生休息行為，因此歸在學校社會環境。', rule:'判斷線索：作息、氣氛、態度與人際互動，屬於學校社會環境。' },
-      { swot:'W', category:'social', text:'部分教師利用下課時間進行課業補救，無法中斷用眼時間。', hint:'雖然提到課業，但重點是教師形成的下課使用習慣。', reason:'這不是特定護眼課程內容，而是教師安排與校園日常文化，使學生無法在下課休息眼睛，屬社會環境。', rule:'容易混淆：有「課業」不一定是教學範疇；若重點是人員態度與校園慣例，屬社會環境。' },
-      { swot:'T', category:'social', text:'單親及隔代教養問題增多，3C 互動多於親子互動，視力不良逐步攀升。', hint:'核心是家庭結構與親子互動方式，不是醫療檢查。', reason:'家庭結構與親子互動會形塑孩子的生活行為，屬於學生所處的社會支持環境。', rule:'判斷線索：家庭互動、同儕與師生態度，通常放在社會環境。' },
-      { swot:'S', category:'teaching', text:'課發會、領域會議中針對視力保健議題共備，提高教案可行性與教學品質。', hint:'注意「共備、教案、教學品質」。', reason:'教師透過共備改善教案與教學品質，直接作用在健康教學，因此屬健康生活技能教學及活動。', rule:'判斷線索：課程設計、教案、教學方法與學習能力，屬健康生活技能教學及活動。' },
-      { swot:'S', category:'teaching', text:'校訂課程包含生態、文史、公民行動，讓孩子走出教室，減少近距離用眼。', hint:'雖然孩子走到戶外，但核心手段是「校訂課程」。', reason:'戶外只是課程進行的場域；核心做法是以校訂課程安排學習活動，所以屬健康生活技能教學及活動。', rule:'容易混淆：看到戶外不一定是物質環境；若重點是課程如何安排，仍屬教學及活動。' },
-      { swot:'W', category:'community', text:'家長普遍忙碌，視力保健親職講座出席率不高，成效有限。', hint:'這項活動需要學校以外的重要夥伴參與。', reason:'親職講座的對象與合作夥伴是家長，重點在家庭參與與連結，因此屬社區關係。', rule:'判斷線索：家長參與、社區夥伴、校外單位合作，通常屬社區關係。' },
-      { swot:'O', category:'community', text:'三峽祖師廟、李梅樹美術館常邀請師生參訪上課，讓孩子有更多機會走出校園。', hint:'找出敘述中的校外單位與合作關係。', reason:'祖師廟與美術館是校外社區資源，透過合作提供學習機會，因此屬社區關係。', rule:'容易混淆：雖然有「上課」，若重點是校外場館提供資源與合作，應歸社區關係。' },
-      { swot:'S', category:'service', text:'護理師能妥善完成學生健康服務，視力檢查完成 100%。', hint:'關鍵角色是護理師，核心工作是檢查。', reason:'護理師執行視力檢查，屬於學校提供的篩檢與健康照護服務，因此歸在健康服務。', rule:'判斷線索：護理師、健康檢查、篩檢與個案追蹤，通常屬健康服務。' },
-      { swot:'O', category:'service', text:'新北市衛生局視力保健專車定期到校巡迴服務，使視力不良複檢率提升。', hint:'雖然有外部單位，但它帶來的是專業檢查與複檢服務。', reason:'衛生局雖是外部資源，但專車提供的是視力巡迴檢查與複檢服務，核心功能屬健康服務。', rule:'容易混淆：外部單位不一定是社區關係；若提供的是篩檢、診療或轉介，優先歸健康服務。' },
-      { swot:'T', category:'service', text:'社區內無眼科診所，車程約 20 分鐘，因此就醫或配合視力檢查較困難。', hint:'問題影響的是就醫可近性與檢查服務。', reason:'診所距離使學生取得眼科檢查與就醫服務較困難，核心是健康服務的可近性。', rule:'判斷線索：就醫距離、診療資源、轉介與複檢便利性，都屬健康服務。' }
+      { swot:'W', category:'policy', text:'多數教師仍將健康促進視為行政端業務，參與主動性較低，使視力保健推動受阻。', hint:'想想這是在談「誰負責推動」以及全校的參與方向。', reason:'敘述聚焦在健康促進由誰承擔，以及教師是否參與全校推動，因此屬於「學校衛生政策」。', rule:'判斷線索：行政責任、校務決策與全校性推動，通常指向學校衛生政策。' },
+      { swot:'W', category:'physical', text:'教室陸續更換大型顯示螢幕，使學生在校接觸 3C 設備的機會增加。', hint:'問題的直接來源，是教室裡看得見、摸得到的設備。', reason:'大型顯示螢幕是教室硬體；硬體設備改變增加螢幕暴露，因此歸在「學校物質環境」。', rule:'判斷線索：即使影響的是行為，只要直接原因是空間或硬體設備，仍屬物質環境。' },
+      { swot:'W', category:'social', text:'部分教師利用下課時間進行課業補救，使學生無法中斷近距離用眼。', hint:'雖然提到課業，重點卻是教師形成的下課安排與校園慣例。', reason:'這不是特定護眼課程內容，而是教師安排與日常文化，使學生無法在下課休息眼睛，屬「學校社會環境」。', rule:'容易混淆：出現「課業」不一定是教學範疇；若重點是人員態度或校園慣例，屬社會環境。' },
+      { swot:'S', category:'teaching', text:'教師在課程會議中針對視力保健議題共同備課，提高教案可行性與教學品質。', hint:'注意「共同備課、教案、教學品質」三個詞。', reason:'教師透過共備改善教案與教學品質，直接作用在健康教學，因此屬「健康生活技能教學及活動」。', rule:'判斷線索：課程設計、教案、教學方法與能力培養，都屬健康生活技能教學及活動。' },
+      { swot:'W', category:'community', text:'家長普遍忙碌，視力保健親職講座出席率不高，使宣導成效有限。', hint:'這項活動需要學校以外的重要夥伴參與。', reason:'親職講座的對象與合作夥伴是家長，重點在家庭參與及學校與家庭的連結，因此屬「社區關係」。', rule:'判斷線索：家長參與、社區夥伴與校外單位合作，通常屬社區關係。' },
+      { swot:'S', category:'community', text:'學校辦理健康促進活動時邀請家長與社區共同參與，增加視力保健知能交流。', hint:'注意參與活動的是家長與社區，而不是只有校內師生。', reason:'活動的核心是學校連結家長及社區共同參與，建立校內外合作，因此歸在「社區關係」。', rule:'容易混淆：有「活動」不一定是教學範疇；若重點是校外夥伴參與，應判為社區關係。' },
+      { swot:'O', category:'service', text:'衛生單位的視力保健專車定期到校巡迴服務，使視力不良學生的複檢率提升。', hint:'雖然資源來自校外，但它實際提供的是專業檢查與複檢服務。', reason:'外部單位提供的是視力巡迴檢查與複檢服務，核心功能是篩檢與追蹤，因此屬「健康服務」。', rule:'容易混淆：外部單位不一定是社區關係；若提供篩檢、診療或轉介，優先歸健康服務。' },
+      { swot:'T', category:'service', text:'醫療院所候診時間較長，家長可能因此拖延學生複診，不利於後續眼睛照護。', hint:'找出這段話影響的是哪一種專業服務流程。', reason:'候診與複診延誤直接影響學生取得醫療照護及後續追蹤，核心屬於「健康服務」。', rule:'判斷線索：檢查、複診、轉介、就醫與個案追蹤，都屬健康服務。' }
     ];
 
     const swotNames = { S:'S 優勢', W:'W 劣勢', O:'O 機會', T:'T 威脅' };
@@ -378,6 +429,7 @@
 
     function showScreen(id) {
       screens.forEach(screen => $(screen).classList.toggle('hidden', screen !== id));
+      document.body.classList.toggle('game-active', id === 'gameScreen');
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
@@ -439,7 +491,6 @@
       });
       $('selectedName').textContent = `已選擇：${cat.name}`;
       $('checkButton').disabled = false;
-      if (window.innerWidth < 941) $('checkButton').scrollIntoView({ behavior:'smooth', block:'center' });
     }
 
     function checkAnswer() {
@@ -520,7 +571,7 @@
     }
 
     function copyResult() {
-      const text = `我完成了「視力保健大作戰」！\n15 張 SWOT 線索全數配對完成，首次配對正確率 ${Math.round(firstTryCorrect/cards.length*100)}%。`;
+      const text = `我完成了「視力保健大作戰」！\n8 張 SWOT 線索全數配對完成，首次配對正確率 ${Math.round(firstTryCorrect/cards.length*100)}%。`;
       navigator.clipboard?.writeText(text).then(() => showToast('學習成果已複製')).catch(() => showToast('無法自動複製，請截圖保存'));
     }
 
@@ -544,7 +595,13 @@
     $('guideButton').addEventListener('click', () => { $('guideBackdrop').classList.remove('hidden'); setTimeout(() => $('closeGuideButton').focus(), 50); });
     $('closeGuideButton').addEventListener('click', () => { $('guideBackdrop').classList.add('hidden'); $('guideButton').focus(); });
     $('guideBackdrop').addEventListener('click', event => { if (event.target === $('guideBackdrop')) $('closeGuideButton').click(); });
-    $('statementCard').addEventListener('dragstart', event => { event.dataTransfer.setData('text/plain','statement'); $('statementCard').classList.add('dragging'); });
+    const coarsePointer = window.matchMedia('(pointer: coarse)');
+    $('statementCard').draggable = !coarsePointer.matches;
+    $('statementCard').addEventListener('dragstart', event => {
+      if (coarsePointer.matches) { event.preventDefault(); return; }
+      event.dataTransfer.setData('text/plain','statement');
+      $('statementCard').classList.add('dragging');
+    });
     $('statementCard').addEventListener('dragend', () => $('statementCard').classList.remove('dragging'));
     document.addEventListener('keydown', event => {
       if (event.key === 'Escape') {
