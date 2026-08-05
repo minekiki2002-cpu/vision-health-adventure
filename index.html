@@ -1,0 +1,558 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#6ac7b2">
+  <meta name="description" content="視力保健大作戰：透過可愛校園地圖，學習視力保健 SWOT 敘述與六大範疇的配對。">
+  <title>視力保健大作戰</title>
+  <style>
+    :root {
+      --ink: #29495b;
+      --muted: #6f8793;
+      --paper: #fffdf7;
+      --mint: #6ac7b2;
+      --mint-dark: #329b86;
+      --sun: #ffd66b;
+      --coral: #ff8d7d;
+      --sky: #86ccec;
+      --lavender: #b7a6e8;
+      --grass: #bde58d;
+      --line: #d7e5df;
+      --shadow: 0 10px 0 rgba(44, 100, 91, .10), 0 16px 30px rgba(36, 78, 76, .13);
+      --soft-shadow: 0 5px 0 rgba(44, 100, 91, .09), 0 10px 20px rgba(36, 78, 76, .10);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      font-family: "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", system-ui, sans-serif;
+      background:
+        radial-gradient(circle at 12% 8%, rgba(255,255,255,.95) 0 3px, transparent 4px),
+        radial-gradient(circle at 88% 17%, rgba(255,255,255,.8) 0 5px, transparent 6px),
+        linear-gradient(#dff5ff 0 40%, #cceaa7 40% 100%);
+      background-size: 78px 78px, 120px 120px, auto;
+      overflow-x: hidden;
+    }
+
+    button { font: inherit; }
+    button:focus-visible, [tabindex]:focus-visible { outline: 4px solid #2a7fae; outline-offset: 3px; }
+    .hidden { display: none !important; }
+
+    .cloud { position: fixed; z-index: -1; width: 150px; height: 42px; border-radius: 50px; background: rgba(255,255,255,.78); filter: drop-shadow(0 7px 0 rgba(86,148,164,.08)); }
+    .cloud::before, .cloud::after { content: ""; position: absolute; border-radius: 50%; background: inherit; }
+    .cloud::before { width: 62px; height: 62px; left: 25px; bottom: 8px; }
+    .cloud::after { width: 76px; height: 76px; right: 22px; bottom: 3px; }
+    .cloud.one { top: 7%; left: -30px; animation: drift 18s ease-in-out infinite alternate; }
+    .cloud.two { top: 22%; right: -45px; transform: scale(.72); animation: drift 15s ease-in-out infinite alternate-reverse; }
+    @keyframes drift { to { translate: 45px 6px; } }
+
+    .app { width: min(1180px, calc(100% - 28px)); margin: 0 auto; padding: 20px 0 56px; }
+    .topbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 16px; }
+    .brand { display: flex; align-items: center; gap: 11px; font-weight: 900; letter-spacing: .04em; }
+    .mini-eye { width: 48px; height: 38px; background: white; border: 3px solid var(--ink); border-radius: 60% 45% 60% 45%; rotate: -4deg; position: relative; box-shadow: 0 5px 0 rgba(42,73,91,.12); }
+    .mini-eye::before { content: ""; position: absolute; width: 15px; height: 15px; border-radius: 50%; background: var(--mint); border: 3px solid var(--ink); left: 13px; top: 8px; }
+    .mini-eye::after { content: ""; position: absolute; width: 5px; height: 5px; border-radius: 50%; background: white; left: 18px; top: 11px; }
+    .tool-btn { border: 2px solid rgba(41,73,91,.16); border-radius: 999px; background: rgba(255,255,255,.82); color: var(--ink); padding: 9px 14px; font-weight: 800; cursor: pointer; box-shadow: 0 4px 0 rgba(41,73,91,.10); }
+    .tool-btn:hover { translate: 0 -2px; }
+
+    .panel { background: rgba(255,253,247,.96); border: 3px solid rgba(255,255,255,.9); border-radius: 30px; box-shadow: var(--shadow); }
+    .start-screen { overflow: hidden; position: relative; padding: clamp(28px, 5vw, 60px); min-height: 680px; }
+    .start-screen::after { content: ""; position: absolute; inset: auto -10% -130px; height: 310px; background: #97d46f; border-radius: 50% 50% 0 0; z-index: 0; }
+    .hero { position: relative; z-index: 1; display: grid; grid-template-columns: 1.15fr .85fr; gap: 34px; align-items: center; }
+    .eyebrow { display: inline-flex; align-items: center; gap: 8px; background: #e7f7f2; color: var(--mint-dark); border-radius: 999px; padding: 8px 13px; font-weight: 900; }
+    h1 { font-size: clamp(2.45rem, 6vw, 5rem); line-height: .98; margin: 22px 0 18px; letter-spacing: -.045em; color: #28566b; text-shadow: 0 5px 0 white; }
+    h1 em { display: block; color: var(--coral); font-style: normal; }
+    .lead { font-size: clamp(1.05rem, 2vw, 1.3rem); line-height: 1.8; max-width: 650px; }
+    .start-btn, .primary-btn { border: 0; border-radius: 18px; background: linear-gradient(180deg, #ff9c8f, #ff7d6d); color: white; font-weight: 900; cursor: pointer; box-shadow: 0 7px 0 #d9584b, 0 12px 22px rgba(212,83,69,.25); transition: .16s ease; }
+    .start-btn { padding: 16px 28px; font-size: 1.25rem; margin-top: 18px; }
+    .start-btn:hover, .primary-btn:hover { translate: 0 -3px; filter: saturate(1.06); }
+    .start-btn:active, .primary-btn:active { translate: 0 4px; box-shadow: 0 3px 0 #d9584b; }
+    .promise { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 24px; }
+    .promise span { background: white; border: 2px dashed #bad9cd; border-radius: 999px; padding: 7px 11px; font-size: .9rem; font-weight: 800; }
+
+    .mascot-wrap { display: grid; place-items: center; min-height: 350px; position: relative; }
+    .mascot-wrap::before { content: ""; width: 330px; height: 330px; position: absolute; border-radius: 50%; background: #ffe99b; border: 8px solid rgba(255,255,255,.85); box-shadow: 0 13px 0 rgba(171,133,45,.10); }
+    .mascot { width: min(330px, 100%); position: relative; z-index: 1; animation: bob 3s ease-in-out infinite; filter: drop-shadow(0 16px 0 rgba(56,92,85,.12)); }
+    @keyframes bob { 50% { transform: translateY(-10px) rotate(1deg); } }
+
+    .how { position: relative; z-index: 2; display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 38px; }
+    .how-card { background: rgba(255,255,255,.94); border-radius: 20px; padding: 17px; display: flex; gap: 12px; align-items: center; box-shadow: var(--soft-shadow); }
+    .how-no { flex: 0 0 38px; height: 38px; border-radius: 13px; display: grid; place-items: center; color: white; background: var(--mint); font-weight: 900; }
+    .how-card:nth-child(2) .how-no { background: var(--sky); }
+    .how-card:nth-child(3) .how-no { background: var(--lavender); }
+    .how-card strong { display: block; margin-bottom: 3px; }
+    .how-card small { color: var(--muted); }
+
+    .game-screen { display: grid; gap: 16px; }
+    .hud { display: grid; grid-template-columns: auto 1fr auto; gap: 16px; align-items: center; padding: 14px 20px; }
+    .level-pill { background: #e7f7f2; color: var(--mint-dark); border-radius: 999px; padding: 9px 13px; font-weight: 900; white-space: nowrap; }
+    .progress-track { height: 15px; border-radius: 99px; background: #e4ede8; overflow: hidden; border: 2px solid white; box-shadow: inset 0 2px 3px rgba(41,73,91,.08); }
+    .progress-fill { height: 100%; width: 0; background: linear-gradient(90deg, var(--mint), #8fd9be); border-radius: inherit; transition: width .45s cubic-bezier(.2,.8,.2,1); }
+    .score { font-weight: 900; white-space: nowrap; }
+    .score span { color: var(--coral); font-size: 1.2rem; }
+
+    .game-layout { display: grid; grid-template-columns: minmax(290px, .72fr) minmax(540px, 1.28fr); gap: 16px; align-items: stretch; }
+    .mission { padding: 22px; display: flex; flex-direction: column; min-height: 620px; }
+    .mission-label { display: flex; justify-content: space-between; gap: 10px; align-items: center; color: var(--muted); font-size: .9rem; font-weight: 800; }
+    .swot-chip { border-radius: 999px; padding: 6px 10px; color: white; font-weight: 900; letter-spacing: .06em; }
+    .swot-S { background: #4bb798; } .swot-W { background: #ec8c62; } .swot-O { background: #5ba9dd; } .swot-T { background: #9c7bd0; }
+    .statement-card { margin: 22px 0; padding: 25px 22px 23px; border: 3px solid #f1d887; border-radius: 23px; background: #fff9df; box-shadow: 0 7px 0 #ead27d; position: relative; cursor: grab; touch-action: none; }
+    .statement-card::before { content: "「"; position: absolute; left: 8px; top: -13px; font-size: 3rem; color: #e9c45a; font-weight: 900; }
+    .statement-card.dragging { opacity: .78; rotate: -2deg; scale: 1.03; cursor: grabbing; }
+    .statement { font-size: clamp(1.1rem, 2vw, 1.35rem); line-height: 1.75; font-weight: 800; margin: 0; }
+    .instruction { text-align: center; color: var(--muted); font-weight: 700; font-size: .92rem; }
+    .selected-name { min-height: 28px; text-align: center; font-weight: 900; color: var(--mint-dark); }
+    .primary-btn { padding: 13px 20px; font-size: 1.04rem; width: 100%; margin-top: auto; }
+    .primary-btn:disabled { background: #b7c6c2; box-shadow: 0 6px 0 #8fa29d; cursor: not-allowed; filter: none; }
+    .hint-btn { margin: 12px auto 0; border: 0; background: transparent; color: #3f7795; font-weight: 800; text-decoration: underline; cursor: pointer; }
+    .hint-box { background: #ecf8ff; border: 2px dashed #8cc5e0; color: #36647a; border-radius: 15px; padding: 12px; margin-top: 12px; line-height: 1.55; }
+
+    .map-panel { padding: 18px; position: relative; overflow: hidden; background: linear-gradient(#e4f6ff 0 21%, #c9e99e 21%); }
+    .map-title { position: relative; z-index: 3; display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+    .map-title h2 { font-size: 1.2rem; margin: 0; }
+    .map-title small { color: var(--muted); font-weight: 700; }
+    .campus-map { position: relative; z-index: 2; display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .zone { min-height: 245px; border: 3px solid rgba(62,107,92,.17); border-radius: 23px; background: rgba(255,255,255,.86); padding: 13px 11px; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: space-between; text-align: center; box-shadow: 0 7px 0 rgba(58,101,87,.12); transition: .18s ease; position: relative; overflow: hidden; }
+    .zone:hover { translate: 0 -4px; box-shadow: 0 11px 0 rgba(58,101,87,.12); }
+    .zone.selected { border-color: #2e907b; background: #effff9; box-shadow: 0 0 0 5px rgba(106,199,178,.25), 0 8px 0 rgba(58,101,87,.15); }
+    .zone.drop-ready { animation: pulse 1s ease-in-out infinite; }
+    @keyframes pulse { 50% { scale: 1.025; border-color: var(--coral); } }
+    .zone-icon { width: 118px; height: 100px; margin-top: 8px; }
+    .zone-name { font-weight: 900; line-height: 1.25; font-size: 1.02rem; }
+    .zone-clue { color: var(--muted); font-size: .78rem; line-height: 1.4; margin-top: 5px; }
+    .zone-badge { align-self: flex-start; border-radius: 99px; background: #edf4ef; color: #587268; padding: 4px 8px; font-size: .72rem; font-weight: 800; }
+    .road { position: absolute; z-index: 1; inset: 40% -10% auto; height: 75px; background: #e9c99a; rotate: -5deg; border-top: 5px dashed rgba(255,255,255,.75); border-bottom: 5px dashed rgba(255,255,255,.75); }
+
+    .feedback-backdrop, .guide-backdrop { position: fixed; inset: 0; z-index: 20; background: rgba(27,58,70,.5); backdrop-filter: blur(5px); display: grid; place-items: center; padding: 18px; }
+    .feedback-card, .guide-card { width: min(620px, 100%); max-height: calc(100vh - 36px); overflow: auto; background: var(--paper); border: 4px solid white; border-radius: 28px; box-shadow: 0 20px 50px rgba(25,53,60,.3); padding: 26px; animation: pop .26s cubic-bezier(.2,1.4,.4,1); }
+    @keyframes pop { from { transform: scale(.83); opacity: 0; } }
+    .feedback-head { display: flex; align-items: center; gap: 15px; }
+    .result-icon { width: 58px; height: 58px; flex: 0 0 58px; display: grid; place-items: center; border-radius: 19px; color: white; font-size: 2rem; font-weight: 900; }
+    .result-icon.good { background: var(--mint); } .result-icon.try { background: var(--coral); }
+    .feedback-card h3 { font-size: 1.55rem; margin: 0 0 3px; }
+    .feedback-card p { line-height: 1.65; }
+    .reason { background: #f1f8f4; border-radius: 17px; padding: 15px 17px; border-left: 6px solid var(--mint); }
+    .learning-clue { background: #fff7d7; border-radius: 17px; padding: 15px 17px; border-left: 6px solid var(--sun); }
+    .feedback-actions { display: flex; gap: 10px; margin-top: 19px; }
+    .feedback-actions .primary-btn { margin: 0; }
+    .secondary-btn { border: 2px solid #bcd2c8; background: white; color: var(--ink); border-radius: 16px; padding: 12px 17px; font-weight: 900; cursor: pointer; }
+
+    .guide-card h2 { margin-top: 0; }
+    .guide-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .guide-item { background: #f4f8f5; border-radius: 15px; padding: 13px; }
+    .guide-item strong { display: block; margin-bottom: 5px; }
+    .guide-item small { line-height: 1.5; color: var(--muted); }
+
+    .finish-screen { padding: clamp(25px, 5vw, 50px); text-align: center; }
+    .finish-screen h2 { font-size: clamp(2rem, 5vw, 3.8rem); margin: 10px 0; color: var(--mint-dark); }
+    .stars { font-size: 3rem; letter-spacing: 8px; filter: drop-shadow(0 5px 0 rgba(201,154,35,.16)); }
+    .summary-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; max-width: 680px; margin: 25px auto; }
+    .stat { background: #f2f8f5; border-radius: 18px; padding: 17px 10px; }
+    .stat b { display: block; font-size: 1.8rem; color: var(--coral); }
+    .review { text-align: left; max-width: 820px; margin: 28px auto; }
+    .review h3 { text-align: center; }
+    .review-item { display: grid; grid-template-columns: 44px 1fr; gap: 12px; background: white; border: 2px solid #e0ebe5; border-radius: 17px; padding: 14px; margin-bottom: 10px; }
+    .review-icon { width: 44px; height: 44px; border-radius: 14px; display: grid; place-items: center; background: #fff3c9; font-size: 1.3rem; }
+    .review-item strong { display: block; margin-bottom: 4px; color: var(--mint-dark); }
+    .review-item p { margin: 0; line-height: 1.5; font-size: .93rem; }
+    .finish-actions { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
+    .finish-actions .primary-btn { width: auto; margin: 0; }
+
+    .toast { position: fixed; z-index: 40; left: 50%; bottom: 24px; transform: translateX(-50%); padding: 12px 18px; border-radius: 999px; background: var(--ink); color: white; font-weight: 800; box-shadow: 0 8px 25px rgba(0,0,0,.2); }
+
+    @media (max-width: 940px) {
+      .hero { grid-template-columns: 1fr; text-align: center; }
+      .hero-copy { display: grid; justify-items: center; }
+      .mascot-wrap { min-height: 270px; }
+      .mascot-wrap::before { width: 260px; height: 260px; }
+      .mascot { width: 265px; }
+      .game-layout { grid-template-columns: 1fr; }
+      .mission { min-height: auto; }
+      .primary-btn { margin-top: 10px; }
+      .campus-map { grid-template-columns: repeat(3, 1fr); }
+      .zone { min-height: 215px; }
+    }
+
+    @media (max-width: 650px) {
+      .app { width: min(100% - 18px, 1180px); padding-top: 10px; }
+      .brand span { font-size: .92rem; }
+      .start-screen { padding: 25px 18px 35px; min-height: 0; }
+      .how { grid-template-columns: 1fr; }
+      .mascot-wrap { min-height: 230px; }
+      .mascot-wrap::before { width: 220px; height: 220px; }
+      .mascot { width: 225px; }
+      .hud { grid-template-columns: auto auto; padding: 12px; }
+      .progress-track { grid-column: 1 / -1; grid-row: 2; }
+      .campus-map { grid-template-columns: repeat(2, 1fr); gap: 9px; }
+      .map-panel { padding: 12px; }
+      .map-title { align-items: flex-start; flex-direction: column; gap: 2px; }
+      .zone { min-height: 205px; padding: 9px 7px; }
+      .zone-icon { width: 93px; height: 82px; }
+      .zone-name { font-size: .9rem; }
+      .zone-clue { font-size: .69rem; }
+      .mission { padding: 17px; min-height: 0; }
+      .statement-card { margin: 15px 0; padding: 20px 17px; }
+      .statement { font-size: 1.05rem; }
+      .guide-grid, .summary-stats { grid-template-columns: 1fr; }
+      .feedback-card, .guide-card { padding: 20px 17px; border-radius: 22px; }
+      .feedback-actions { flex-direction: column; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="cloud one" aria-hidden="true"></div>
+  <div class="cloud two" aria-hidden="true"></div>
+  <main class="app">
+    <header class="topbar">
+      <div class="brand"><span class="mini-eye" aria-hidden="true"></span><span>成福國小・健康促進</span></div>
+      <button class="tool-btn" id="guideButton" type="button">六大範疇小抄</button>
+    </header>
+
+    <section class="panel start-screen" id="startScreen">
+      <div class="hero">
+        <div class="hero-copy">
+          <span class="eyebrow">👀 教師共學任務</span>
+          <h1>視力保健<em>大作戰</em></h1>
+          <p class="lead">校園裡散落了 15 張視力保健線索卡。請判斷每段 SWOT 敘述屬於哪一個範疇，幫助護眼小隊完成校園健康地圖！</p>
+          <button class="start-btn" id="startButton" type="button">出發找線索 →</button>
+          <div class="promise" aria-label="遊戲特色">
+            <span>不計時、不搶快</span><span>答錯會給判斷線索</span><span>答對再看完整解說</span>
+          </div>
+        </div>
+        <div class="mascot-wrap" aria-label="護眼小隊吉祥物亮亮">
+          <svg class="mascot" viewBox="0 0 360 320" role="img" aria-label="戴著探險帽的可愛眼睛吉祥物">
+            <path d="M83 172C107 103 244 101 278 171c-31 61-159 80-195 1Z" fill="#fff" stroke="#29495b" stroke-width="8"/>
+            <ellipse cx="183" cy="171" rx="51" ry="56" fill="#6ac7b2" stroke="#29495b" stroke-width="8"/>
+            <ellipse cx="183" cy="174" rx="25" ry="31" fill="#29495b"/>
+            <circle cx="197" cy="158" r="10" fill="#fff"/>
+            <path d="M106 124c5-45 27-77 73-78 50-2 75 28 83 76" fill="#ffd66b" stroke="#29495b" stroke-width="8" stroke-linejoin="round"/>
+            <path d="M83 123c46-14 145-16 197 0l-8 25c-56-13-127-13-181 1Z" fill="#ff8d7d" stroke="#29495b" stroke-width="8" stroke-linejoin="round"/>
+            <path d="M96 217c-21 7-35 24-41 48M267 215c24 8 37 25 42 48" fill="none" stroke="#29495b" stroke-width="9" stroke-linecap="round"/>
+            <path d="M120 229c-12 18-13 38-9 57M245 230c12 18 12 38 8 57" fill="none" stroke="#29495b" stroke-width="10" stroke-linecap="round"/>
+            <path d="M83 283h57M226 283h57" stroke="#29495b" stroke-width="11" stroke-linecap="round"/>
+            <path d="M58 255l-22-12M307 254l23-13" stroke="#29495b" stroke-width="8" stroke-linecap="round"/>
+            <circle cx="69" cy="194" r="8" fill="#ff9b8e"/><circle cx="292" cy="192" r="8" fill="#ff9b8e"/>
+          </svg>
+        </div>
+      </div>
+      <div class="how">
+        <div class="how-card"><span class="how-no">1</span><div><strong>讀敘述</strong><small>找出內容中的關鍵角色與做法</small></div></div>
+        <div class="how-card"><span class="how-no">2</span><div><strong>選地點</strong><small>點選或拖曳到六大範疇地標</small></div></div>
+        <div class="how-card"><span class="how-no">3</span><div><strong>收線索</strong><small>透過解說建立判斷規則</small></div></div>
+      </div>
+    </section>
+
+    <section class="game-screen hidden" id="gameScreen" aria-live="polite">
+      <div class="panel hud">
+        <div class="level-pill">線索 <span id="cardNumber">1</span> / 15</div>
+        <div class="progress-track" aria-label="遊戲進度"><div class="progress-fill" id="progressFill"></div></div>
+        <div class="score">已找到 <span id="foundCount">0</span> 張</div>
+      </div>
+      <div class="game-layout">
+        <aside class="panel mission">
+          <div class="mission-label"><span>本回合 SWOT 敘述</span><span class="swot-chip" id="swotChip">S 優勢</span></div>
+          <div class="statement-card" id="statementCard" draggable="true" tabindex="0" aria-label="可拖曳的敘述卡">
+            <p class="statement" id="statementText"></p>
+          </div>
+          <p class="instruction">把卡片拖到地圖，或直接點選一個地標</p>
+          <div class="selected-name" id="selectedName">尚未選擇範疇</div>
+          <button class="primary-btn" id="checkButton" type="button" disabled>確認配對</button>
+          <button class="hint-btn" id="hintButton" type="button">我需要一點提示</button>
+          <div class="hint-box hidden" id="hintBox"></div>
+        </aside>
+
+        <section class="panel map-panel" aria-label="六大範疇校園地圖">
+          <div class="map-title"><h2>成福護眼校園地圖</h2><small>每個地標代表一個健康促進範疇</small></div>
+          <div class="road" aria-hidden="true"></div>
+          <div class="campus-map" id="campusMap"></div>
+        </section>
+      </div>
+    </section>
+
+    <section class="panel finish-screen hidden" id="finishScreen">
+      <div class="stars" aria-hidden="true">★ ★ ★</div>
+      <h2>護眼地圖完成！</h2>
+      <p class="lead" style="margin-inline:auto">你已經把 15 張 SWOT 線索送回正確的六大範疇。重點不是快，而是知道「為什麼」。</p>
+      <div class="summary-stats">
+        <div class="stat"><b>15</b><span>完成線索</span></div>
+        <div class="stat"><b id="accuracyStat">100%</b><span>首次配對正確率</span></div>
+        <div class="stat"><b id="hintStat">0</b><span>使用提示</span></div>
+      </div>
+      <div class="review" id="reviewArea"></div>
+      <div class="finish-actions">
+        <button class="primary-btn" id="replayButton" type="button">再玩一次</button>
+        <button class="secondary-btn" id="copyButton" type="button">複製學習成果</button>
+      </div>
+    </section>
+  </main>
+
+  <div class="feedback-backdrop hidden" id="feedbackBackdrop" role="dialog" aria-modal="true" aria-labelledby="feedbackTitle">
+    <div class="feedback-card">
+      <div class="feedback-head"><div class="result-icon" id="resultIcon">✓</div><div><h3 id="feedbackTitle"></h3><small id="feedbackSubtitle"></small></div></div>
+      <p class="reason" id="feedbackReason"></p>
+      <p class="learning-clue" id="learningClue"></p>
+      <div class="feedback-actions">
+        <button class="secondary-btn hidden" id="showAnswerButton" type="button">幫我縮小範圍</button>
+        <button class="primary-btn" id="continueButton" type="button"></button>
+      </div>
+    </div>
+  </div>
+
+  <div class="guide-backdrop hidden" id="guideBackdrop" role="dialog" aria-modal="true" aria-labelledby="guideTitle">
+    <div class="guide-card">
+      <h2 id="guideTitle">六大範疇判斷小抄</h2>
+      <p>先找敘述裡「誰在做、改變什麼」，通常就能找到所屬範疇。</p>
+      <div class="guide-grid" id="guideGrid"></div>
+      <button class="primary-btn" id="closeGuideButton" type="button">我知道了</button>
+    </div>
+  </div>
+
+  <div class="toast hidden" id="toast" role="status"></div>
+
+  <script>
+    const categories = [
+      { id: 'policy', name: '學校衛生政策', short: '政策指揮站', clue: '制度、行政決策、全校推動方向', color: '#ff8d7d', icon: 'policy' },
+      { id: 'physical', name: '學校物質環境', short: '環境觀察站', clue: '硬體設備、空間、採光與校園設施', color: '#86ccec', icon: 'building' },
+      { id: 'social', name: '學校社會環境', short: '關係友善園', clue: '教師態度、作息文化、家庭互動', color: '#b7a6e8', icon: 'people' },
+      { id: 'teaching', name: '健康生活技能教學及活動', short: '護眼學習屋', clue: '課程、教案、教學活動與能力培養', color: '#ffd66b', icon: 'book' },
+      { id: 'community', name: '社區關係', short: '社區合作橋', clue: '家長、社區場館與校外資源合作', color: '#76cfa1', icon: 'bridge' },
+      { id: 'service', name: '健康服務', short: '健康服務所', clue: '檢查、篩檢、轉介、就醫與護理服務', color: '#62b7dd', icon: 'clinic' }
+    ];
+
+    const cards = [
+      { swot:'W', category:'policy', text:'多數老師仍視健康促進是行政端業務，參與主動性較低，視力保健政策推動受阻。', hint:'想想「誰負責推動」以及全校的參與方向。', reason:'這段聚焦在健康促進政策由誰承擔、教師是否參與全校推動，因此屬於「學校衛生政策」。', rule:'判斷線索：行政責任、校務決策、全校性推動，通常指向學校衛生政策。' },
+      { swot:'W', category:'policy', text:'學校活動眾多，健促議題宣導不易深入落實。', hint:'不是某一堂課，而是全校活動安排與議題推動的優先順序。', reason:'敘述談的是全校推動健康議題時，受到活動與校務安排影響，核心是政策落實程度。', rule:'判斷線索：當問題是「全校有沒有持續推動」，優先思考學校衛生政策。' },
+      { swot:'T', category:'policy', text:'新北市各項教育政策訊息頻繁，政策推動容易失焦，衛生政策易被忽略。', hint:'關鍵字就在「政策訊息、推動失焦、被忽略」。', reason:'外部教育政策太多，影響校內衛生政策的聚焦與執行，因此歸在學校衛生政策的威脅。', rule:'判斷線索：上級政策、行政訊息與執行焦點，都屬政策層面的影響。' },
+      { swot:'S', category:'physical', text:'以博物館、美術館、探索樂園理念建置校園，打造不近距離用眼的學習環境。', hint:'注意「建置校園」與「學習環境」這兩個詞。', reason:'這段強調校園空間如何被設計與建置，藉由實體環境改變用眼方式，屬於學校物質環境。', rule:'判斷線索：空間、設備、硬體、採光與校園設施，都先想到物質環境。' },
+      { swot:'W', category:'physical', text:'教室黑板陸續更換大屏螢幕，讓孩子接觸 3C 的機會更頻繁。', hint:'問題來自教室裡看得見、摸得到的設備。', reason:'大屏螢幕是教室硬體設備，設備改變增加螢幕暴露，因此歸在學校物質環境。', rule:'判斷線索：即使影響的是行為，只要直接原因是硬體設備，仍屬物質環境。' },
+      { swot:'W', category:'social', text:'午休時間過短，孩子無法有充足午睡時間，眼睛得不到適當休息。', hint:'思考校園共同生活中的作息與習慣。', reason:'午休長短是學校日常作息與生活文化的一部分，影響學生休息行為，因此歸在學校社會環境。', rule:'判斷線索：作息、氣氛、態度與人際互動，屬於學校社會環境。' },
+      { swot:'W', category:'social', text:'部分教師利用下課時間進行課業補救，無法中斷用眼時間。', hint:'雖然提到課業，但重點是教師形成的下課使用習慣。', reason:'這不是特定護眼課程內容，而是教師安排與校園日常文化，使學生無法在下課休息眼睛，屬社會環境。', rule:'容易混淆：有「課業」不一定是教學範疇；若重點是人員態度與校園慣例，屬社會環境。' },
+      { swot:'T', category:'social', text:'單親及隔代教養問題增多，3C 互動多於親子互動，視力不良逐步攀升。', hint:'核心是家庭結構與親子互動方式，不是醫療檢查。', reason:'家庭結構與親子互動會形塑孩子的生活行為，屬於學生所處的社會支持環境。', rule:'判斷線索：家庭互動、同儕與師生態度，通常放在社會環境。' },
+      { swot:'S', category:'teaching', text:'課發會、領域會議中針對視力保健議題共備，提高教案可行性與教學品質。', hint:'注意「共備、教案、教學品質」。', reason:'教師透過共備改善教案與教學品質，直接作用在健康教學，因此屬健康生活技能教學及活動。', rule:'判斷線索：課程設計、教案、教學方法與學習能力，屬健康生活技能教學及活動。' },
+      { swot:'S', category:'teaching', text:'校訂課程包含生態、文史、公民行動，讓孩子走出教室，減少近距離用眼。', hint:'雖然孩子走到戶外，但核心手段是「校訂課程」。', reason:'戶外只是課程進行的場域；核心做法是以校訂課程安排學習活動，所以屬健康生活技能教學及活動。', rule:'容易混淆：看到戶外不一定是物質環境；若重點是課程如何安排，仍屬教學及活動。' },
+      { swot:'W', category:'community', text:'家長普遍忙碌，視力保健親職講座出席率不高，成效有限。', hint:'這項活動需要學校以外的重要夥伴參與。', reason:'親職講座的對象與合作夥伴是家長，重點在家庭參與與連結，因此屬社區關係。', rule:'判斷線索：家長參與、社區夥伴、校外單位合作，通常屬社區關係。' },
+      { swot:'O', category:'community', text:'三峽祖師廟、李梅樹美術館常邀請師生參訪上課，讓孩子有更多機會走出校園。', hint:'找出敘述中的校外單位與合作關係。', reason:'祖師廟與美術館是校外社區資源，透過合作提供學習機會，因此屬社區關係。', rule:'容易混淆：雖然有「上課」，若重點是校外場館提供資源與合作，應歸社區關係。' },
+      { swot:'S', category:'service', text:'護理師能妥善完成學生健康服務，視力檢查完成 100%。', hint:'關鍵角色是護理師，核心工作是檢查。', reason:'護理師執行視力檢查，屬於學校提供的篩檢與健康照護服務，因此歸在健康服務。', rule:'判斷線索：護理師、健康檢查、篩檢與個案追蹤，通常屬健康服務。' },
+      { swot:'O', category:'service', text:'新北市衛生局視力保健專車定期到校巡迴服務，使視力不良複檢率提升。', hint:'雖然有外部單位，但它帶來的是專業檢查與複檢服務。', reason:'衛生局雖是外部資源，但專車提供的是視力巡迴檢查與複檢服務，核心功能屬健康服務。', rule:'容易混淆：外部單位不一定是社區關係；若提供的是篩檢、診療或轉介，優先歸健康服務。' },
+      { swot:'T', category:'service', text:'社區內無眼科診所，車程約 20 分鐘，因此就醫或配合視力檢查較困難。', hint:'問題影響的是就醫可近性與檢查服務。', reason:'診所距離使學生取得眼科檢查與就醫服務較困難，核心是健康服務的可近性。', rule:'判斷線索：就醫距離、診療資源、轉介與複檢便利性，都屬健康服務。' }
+    ];
+
+    const swotNames = { S:'S 優勢', W:'W 劣勢', O:'O 機會', T:'T 威脅' };
+    const iconSvgs = {
+      policy: `<svg viewBox="0 0 130 105" aria-hidden="true"><path d="M24 91V37h82v54" fill="#fff5cf" stroke="#29495b" stroke-width="5"/><path d="M18 38 65 10l47 28" fill="#ff8d7d" stroke="#29495b" stroke-width="5" stroke-linejoin="round"/><path d="M52 91V57h26v34" fill="#86ccec" stroke="#29495b" stroke-width="5"/><path d="M89 50h10v17H89zM31 50h10v17H31z" fill="#fff" stroke="#29495b" stroke-width="4"/><circle cx="65" cy="31" r="7" fill="#ffd66b" stroke="#29495b" stroke-width="3"/></svg>`,
+      building: `<svg viewBox="0 0 130 105" aria-hidden="true"><path d="M19 91V25h92v66" fill="#e9f8ff" stroke="#29495b" stroke-width="5"/><path d="M12 25h106L102 9H28Z" fill="#86ccec" stroke="#29495b" stroke-width="5"/><path d="M55 91V61h22v30" fill="#ffcf72" stroke="#29495b" stroke-width="4"/><path d="M31 42h14v13H31zm54 0h14v13H85zM31 65h14v13H31zm54 0h14v13H85z" fill="#fff" stroke="#29495b" stroke-width="3"/></svg>`,
+      people: `<svg viewBox="0 0 130 105" aria-hidden="true"><path d="M14 92c3-30 18-43 38-43s35 13 38 43" fill="#b7a6e8" stroke="#29495b" stroke-width="5"/><circle cx="52" cy="29" r="19" fill="#ffd3a4" stroke="#29495b" stroke-width="5"/><path d="M64 92c2-23 14-34 29-34 16 0 27 11 29 34" fill="#76cfa1" stroke="#29495b" stroke-width="5"/><circle cx="93" cy="42" r="15" fill="#ffd3a4" stroke="#29495b" stroke-width="5"/><path d="M35 27c4-18 30-20 36 0" fill="#60493f" stroke="#29495b" stroke-width="5" stroke-linecap="round"/></svg>`,
+      book: `<svg viewBox="0 0 130 105" aria-hidden="true"><path d="M12 22c22-7 39-3 53 10v60C50 78 33 75 12 82Z" fill="#fff" stroke="#29495b" stroke-width="5" stroke-linejoin="round"/><path d="M118 22c-22-7-39-3-53 10v60c15-14 32-17 53-10Z" fill="#fff9d7" stroke="#29495b" stroke-width="5" stroke-linejoin="round"/><path d="M65 32v60" stroke="#29495b" stroke-width="5"/><path d="M25 40h24M25 54h28M81 40h24M78 54h27" stroke="#86ccec" stroke-width="4" stroke-linecap="round"/><circle cx="95" cy="72" r="9" fill="#ffd66b"/></svg>`,
+      bridge: `<svg viewBox="0 0 130 105" aria-hidden="true"><path d="M8 88h114" stroke="#29495b" stroke-width="5" stroke-linecap="round"/><path d="M19 87V58c21-27 71-27 92 0v29" fill="#ffcf72" stroke="#29495b" stroke-width="5"/><path d="M37 87V63c14-14 42-14 56 0v24" fill="#e6f7ff" stroke="#29495b" stroke-width="5"/><path d="M12 50h106" stroke="#29495b" stroke-width="5"/><path d="M25 50V35m20 15V29m20 21V27m20 23V29m20 21V35" stroke="#29495b" stroke-width="4"/></svg>`,
+      clinic: `<svg viewBox="0 0 130 105" aria-hidden="true"><path d="M20 91V31h90v60" fill="#e9f8ff" stroke="#29495b" stroke-width="5"/><path d="M13 32h104L103 13H27Z" fill="#62b7dd" stroke="#29495b" stroke-width="5"/><path d="M54 91V65h22v26" fill="#fff" stroke="#29495b" stroke-width="4"/><path d="M59 26V13h12v13h13v12H71v13H59V38H46V26Z" fill="#ff756c" stroke="#29495b" stroke-width="3"/><path d="M31 58h13v14H31zm55 0h13v14H86z" fill="#fff" stroke="#29495b" stroke-width="3"/></svg>`
+    };
+
+    let deck = [];
+    let index = 0;
+    let selectedCategory = null;
+    let firstTryCorrect = 0;
+    let attemptsThisCard = 0;
+    let hintCount = 0;
+    let mistakes = [];
+    let dragGhost = null;
+
+    const $ = id => document.getElementById(id);
+    const screens = ['startScreen','gameScreen','finishScreen'];
+
+    function shuffle(items) {
+      const copy = [...items];
+      for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    }
+
+    function showScreen(id) {
+      screens.forEach(screen => $(screen).classList.toggle('hidden', screen !== id));
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function buildMap() {
+      $('campusMap').innerHTML = categories.map(cat => `
+        <button class="zone" type="button" data-category="${cat.id}" aria-pressed="false">
+          <span class="zone-badge">${cat.short}</span>
+          <span class="zone-icon">${iconSvgs[cat.icon]}</span>
+          <span><span class="zone-name">${cat.name}</span><span class="zone-clue">${cat.clue}</span></span>
+        </button>`).join('');
+      document.querySelectorAll('.zone').forEach(zone => {
+        zone.addEventListener('click', () => selectCategory(zone.dataset.category));
+        zone.addEventListener('dragover', event => { event.preventDefault(); zone.classList.add('drop-ready'); });
+        zone.addEventListener('dragleave', () => zone.classList.remove('drop-ready'));
+        zone.addEventListener('drop', event => { event.preventDefault(); zone.classList.remove('drop-ready'); selectCategory(zone.dataset.category); });
+      });
+    }
+
+    function buildGuide() {
+      $('guideGrid').innerHTML = categories.map(cat => `<div class="guide-item"><strong>${cat.name}</strong><small>${cat.clue}</small></div>`).join('');
+    }
+
+    function startGame() {
+      deck = shuffle(cards);
+      index = 0; selectedCategory = null; firstTryCorrect = 0; attemptsThisCard = 0; hintCount = 0; mistakes = [];
+      buildMap();
+      showScreen('gameScreen');
+      renderCard();
+    }
+
+    function renderCard() {
+      const card = deck[index];
+      selectedCategory = null;
+      attemptsThisCard = 0;
+      $('cardNumber').textContent = index + 1;
+      $('foundCount').textContent = index;
+      $('progressFill').style.width = `${(index / deck.length) * 100}%`;
+      $('statementText').textContent = card.text;
+      $('swotChip').textContent = swotNames[card.swot];
+      $('swotChip').className = `swot-chip swot-${card.swot}`;
+      $('selectedName').textContent = '尚未選擇範疇';
+      $('checkButton').disabled = true;
+      $('hintBox').classList.add('hidden');
+      document.querySelectorAll('.zone').forEach(zone => {
+        zone.classList.remove('selected');
+        zone.setAttribute('aria-pressed','false');
+        zone.style.opacity = '';
+        zone.style.pointerEvents = '';
+      });
+    }
+
+    function selectCategory(id) {
+      selectedCategory = id;
+      const cat = categories.find(c => c.id === id);
+      document.querySelectorAll('.zone').forEach(zone => {
+        const active = zone.dataset.category === id;
+        zone.classList.toggle('selected', active);
+        zone.setAttribute('aria-pressed', active ? 'true' : 'false');
+      });
+      $('selectedName').textContent = `已選擇：${cat.name}`;
+      $('checkButton').disabled = false;
+      if (window.innerWidth < 941) $('checkButton').scrollIntoView({ behavior:'smooth', block:'center' });
+    }
+
+    function checkAnswer() {
+      if (!selectedCategory) return;
+      const card = deck[index];
+      attemptsThisCard++;
+      const correct = selectedCategory === card.category;
+      const correctCat = categories.find(c => c.id === card.category);
+      const selectedCat = categories.find(c => c.id === selectedCategory);
+
+      $('feedbackBackdrop').classList.remove('hidden');
+      $('resultIcon').className = `result-icon ${correct ? 'good' : 'try'}`;
+      $('resultIcon').textContent = correct ? '✓' : '↻';
+      $('feedbackTitle').textContent = correct ? '配對成功！' : '再觀察一下';
+      $('feedbackSubtitle').textContent = correct ? `${swotNames[card.swot]} × ${correctCat.name}` : `你選了「${selectedCat.name}」`;
+      $('feedbackReason').textContent = correct ? card.reason : `這段敘述的主要焦點不是「${selectedCat.clue}」。回到卡片，找出真正被改變的對象或提供服務的角色。`;
+      $('learningClue').textContent = correct ? card.rule : card.hint;
+      $('continueButton').textContent = correct ? (index === deck.length - 1 ? '查看學習成果' : '收下線索，前往下一站') : '回去再試一次';
+      $('showAnswerButton').classList.toggle('hidden', correct || attemptsThisCard < 2);
+      $('feedbackBackdrop').dataset.correct = String(correct);
+
+      if (correct) {
+        if (attemptsThisCard === 1) firstTryCorrect++;
+        if (attemptsThisCard > 1) mistakes.push(card);
+      }
+      setTimeout(() => $('continueButton').focus(), 80);
+    }
+
+    function closeFeedback() {
+      const correct = $('feedbackBackdrop').dataset.correct === 'true';
+      $('feedbackBackdrop').classList.add('hidden');
+      if (correct) {
+        index++;
+        if (index >= deck.length) finishGame(); else renderCard();
+      } else {
+        selectedCategory = null;
+        document.querySelectorAll('.zone').forEach(zone => { zone.classList.remove('selected'); zone.setAttribute('aria-pressed','false'); });
+        $('selectedName').textContent = '再選一次範疇';
+        $('checkButton').disabled = true;
+        $('statementCard').focus();
+      }
+    }
+
+    function narrowChoices() {
+      const card = deck[index];
+      const wrongChoices = shuffle(categories.filter(c => c.id !== card.category)).slice(0, 3).map(c => c.id);
+      document.querySelectorAll('.zone').forEach(zone => {
+        if (wrongChoices.includes(zone.dataset.category)) {
+          zone.style.opacity = '.34'; zone.style.pointerEvents = 'none';
+        } else { zone.style.opacity = ''; zone.style.pointerEvents = ''; }
+      });
+      $('feedbackBackdrop').classList.add('hidden');
+      showToast('已排除三個範疇，現在是三選一');
+    }
+
+    function finishGame() {
+      showScreen('finishScreen');
+      $('progressFill').style.width = '100%';
+      $('accuracyStat').textContent = `${Math.round(firstTryCorrect / cards.length * 100)}%`;
+      $('hintStat').textContent = hintCount;
+      const uniqueMistakes = [...new Map(mistakes.map(card => [card.text, card])).values()];
+      $('reviewArea').innerHTML = uniqueMistakes.length ? `<h3>這幾張值得再看一次</h3>${uniqueMistakes.map(card => {
+        const cat = categories.find(c => c.id === card.category);
+        return `<div class="review-item"><div class="review-icon">👀</div><div><strong>${cat.name}</strong><p>${card.text}</p></div></div>`;
+      }).join('')}` : '<h3>每一張都首次配對成功，六大範疇觀念很清楚！</h3>';
+      launchConfetti();
+    }
+
+    function launchConfetti() {
+      const colors = ['#ff8d7d','#ffd66b','#6ac7b2','#86ccec','#b7a6e8'];
+      for (let i = 0; i < 45; i++) {
+        const bit = document.createElement('i');
+        bit.style.cssText = `position:fixed;z-index:50;left:${Math.random()*100}vw;top:-20px;width:${7+Math.random()*8}px;height:${8+Math.random()*12}px;background:${colors[i%colors.length]};border-radius:3px;pointer-events:none;transform:rotate(${Math.random()*180}deg);transition:transform ${1.6+Math.random()*1.5}s linear,top ${1.6+Math.random()*1.5}s ease-in;`;
+        document.body.appendChild(bit);
+        requestAnimationFrame(() => { bit.style.top = '105vh'; bit.style.transform += ` translateX(${Math.random()*160-80}px) rotate(720deg)`; });
+        setTimeout(() => bit.remove(), 3300);
+      }
+    }
+
+    function copyResult() {
+      const text = `我完成了「視力保健大作戰」！\n15 張 SWOT 線索全數配對完成，首次配對正確率 ${Math.round(firstTryCorrect/cards.length*100)}%。`;
+      navigator.clipboard?.writeText(text).then(() => showToast('學習成果已複製')).catch(() => showToast('無法自動複製，請截圖保存'));
+    }
+
+    function showToast(message) {
+      $('toast').textContent = message; $('toast').classList.remove('hidden');
+      clearTimeout(showToast.timer); showToast.timer = setTimeout(() => $('toast').classList.add('hidden'), 2200);
+    }
+
+    $('startButton').addEventListener('click', startGame);
+    $('replayButton').addEventListener('click', startGame);
+    $('checkButton').addEventListener('click', checkAnswer);
+    $('continueButton').addEventListener('click', closeFeedback);
+    $('showAnswerButton').addEventListener('click', narrowChoices);
+    $('copyButton').addEventListener('click', copyResult);
+    $('hintButton').addEventListener('click', () => {
+      const wasHidden = $('hintBox').classList.contains('hidden');
+      $('hintBox').textContent = deck[index].hint;
+      $('hintBox').classList.toggle('hidden');
+      if (wasHidden) hintCount++;
+    });
+    $('guideButton').addEventListener('click', () => { $('guideBackdrop').classList.remove('hidden'); setTimeout(() => $('closeGuideButton').focus(), 50); });
+    $('closeGuideButton').addEventListener('click', () => { $('guideBackdrop').classList.add('hidden'); $('guideButton').focus(); });
+    $('guideBackdrop').addEventListener('click', event => { if (event.target === $('guideBackdrop')) $('closeGuideButton').click(); });
+    $('statementCard').addEventListener('dragstart', event => { event.dataTransfer.setData('text/plain','statement'); $('statementCard').classList.add('dragging'); });
+    $('statementCard').addEventListener('dragend', () => $('statementCard').classList.remove('dragging'));
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape') {
+        if (!$('guideBackdrop').classList.contains('hidden')) $('closeGuideButton').click();
+      }
+    });
+
+    buildGuide();
+  </script>
+</body>
+</html>
