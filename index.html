@@ -472,7 +472,7 @@
     }
 
     function startGame() {
-      deck = [...cards];
+      deck = [cards[1], cards[6], cards[0], cards[5], cards[2], cards[7], cards[3], cards[4]];
       index = 0; selectedCategory = null; firstTryCorrect = 0; attemptsThisCard = 0; hintCount = 0; mistakes = [];
       buildMap();
       showScreen('gameScreen');
